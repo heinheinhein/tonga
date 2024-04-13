@@ -1,0 +1,14 @@
+{
+    "name": "tonga",
+    "version": "0.1.0",
+    "private": "true",
+    "type": "module",
+    "scripts": {
+        "start": "tsc && node dist/index.js"
+    },
+    "devDependencies": {
+        "@tsconfig/node20": "^20.1.4",
+        "@types/node": "^20.12.7",
+        "typescript": "^5.4.5"
+    }
+}
