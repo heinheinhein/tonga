@@ -4,11 +4,18 @@
     "private": "true",
     "type": "module",
     "scripts": {
-        "start": "tsc && node dist/index.js"
+        "start": "tsc && node --env-file=.env dist/index.js"
     },
     "devDependencies": {
         "@tsconfig/node20": "^20.1.4",
+        "@types/blessed": "^0.1.25",
         "@types/node": "^20.12.7",
         "typescript": "^5.4.5"
+    },
+    "dependencies": {
+        "@ctrl/qbittorrent": "^8.0.0",
+        "blessed": "^0.1.81",
+        "blessed-contrib": "^4.11.0",
+        "maxmind": "^4.3.18"
     }
 }
