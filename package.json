@@ -9,13 +9,14 @@
     "devDependencies": {
         "@tsconfig/node20": "^20.1.4",
         "@types/blessed": "^0.1.25",
+        "@types/cookie": "^0.6.0",
         "@types/node": "^20.12.7",
         "typescript": "^5.4.5"
     },
     "dependencies": {
-        "@ctrl/qbittorrent": "^8.0.0",
         "blessed": "^0.1.81",
         "blessed-contrib": "^4.11.0",
+        "cookie": "^0.6.0",
         "maxmind": "^4.3.18"
     }
 }

@@ -1,7 +1,6 @@
 import blessed from "blessed";
 import contrib from "blessed-contrib";
-import map from "./widgets/map.js"
-
+import map from "./widgets/map.js";
 
 
 const screen = blessed.screen({

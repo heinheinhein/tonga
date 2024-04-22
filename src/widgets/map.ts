@@ -1,9 +1,8 @@
 import blessed from "blessed";
 import contrib from "blessed-contrib";
-import qbittorrent from "../qbittorrent.js"
+import qb from "../qbittorrent.js"
 import lookup from "../iplookup.js";
-import { MapMarker } from "../types.js";
-import { TorrentPeer } from "@ctrl/qbittorrent";
+import { MapMarker, Peer } from "../types.js";
 
 
 async function updateMap(mapWidget: any, screen: blessed.Widgets.Screen): Promise<void> {
@@ -21,10 +20,10 @@ async function updateMap(mapWidget: any, screen: blessed.Widgets.Screen): Promis
 async function getMarkers(): Promise<MapMarker[]> {
     const markers: MapMarker[] = [];
 
-    const activeTorrents = await qbittorrent.listTorrents({ filter: "active" });
+    const activeTorrents = await qb.torrentsInfo("active");
 
     for (const torrent of activeTorrents) {
-        const torrentPeers = (await qbittorrent.torrentPeers(torrent.hash)).peers;
+        const torrentPeers = (await qb.syncTorrentPeers(torrent.hash)).peers;
 
         for (const peer in torrentPeers) {
             const torrentPeer = torrentPeers[peer];
@@ -43,7 +42,7 @@ async function getMarkers(): Promise<MapMarker[]> {
 }
 
 // returns false if peer doesn't have a location
-function peerToMarker(peer: TorrentPeer): MapMarker | false {
+function peerToMarker(peer: Peer): MapMarker | false {
 
     const char = peer.dl_speed ? "▽" : "△";
 
