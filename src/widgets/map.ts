@@ -5,13 +5,13 @@ import lookup from "../iplookup.js";
 import { MapMarker, Peer } from "../types.js";
 
 
-async function updateMap(mapWidget: any, screen: blessed.Widgets.Screen): Promise<void> {
+async function updateWidget(widget: any, screen: blessed.Widgets.Screen): Promise<void> {
     const markers = await getMarkers();
 
-    mapWidget.clearMarkers();
+    widget.clearMarkers();
 
     for (const marker of markers) {
-        mapWidget.addMarker(marker)
+        widget.addMarker(marker)
     };
 
     screen.render();
@@ -71,8 +71,8 @@ export default {
     settings: {
         label: "Active Peers"
     },
-    startUpdateInterval: (mapWidget: any, screen: blessed.Widgets.Screen) => {
-        updateMap(mapWidget, screen);
-        return setInterval(updateMap, 5000, mapWidget, screen);
+    startUpdateInterval: (widget: any, screen: blessed.Widgets.Screen) => {
+        updateWidget(widget, screen);
+        return setInterval(updateWidget, 5000, widget, screen);
     }
 }
