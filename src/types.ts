@@ -14,6 +14,11 @@ export type TerminalColor = "black" |
     "cyan" |
     "white";
 
+export type Location = {
+    lon: number;
+    lat: number;
+}
+
 export type Torrent = {
     hash: string;
 }

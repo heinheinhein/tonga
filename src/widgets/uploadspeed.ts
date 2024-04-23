@@ -1,7 +1,7 @@
 import blessed from "blessed";
 import contrib from "blessed-contrib";
 import qb from "../qbittorrent.js"
-import lookup, { anonymizeIp } from "../iplookup.js";
+import { ipToCountryCode, anonymizeIp } from "../iplookup.js";
 import { DisplayPeer, PeersSpeed, PeersSpeeds } from "../types.js";
 
 
@@ -49,10 +49,12 @@ async function updateWidget(widget: any, screen: blessed.Widgets.Screen): Promis
     while (featuredPeers.length < 3 && activePeers.length > 2) {
         const peerToFeature = activePeers[Math.round(Math.random() * activePeers.length)];
 
-        featuredPeers.push({
-            ip: peerToFeature,
-            displayIp: `${anonymizeIp(peerToFeature)} (${ipToCountryCode(peerToFeature)})`
-        });
+        if (peerToFeature) {
+            featuredPeers.push({
+                ip: peerToFeature,
+                displayIp: `${anonymizeIp(peerToFeature)} (${ipToCountryCode(peerToFeature)})`
+            });
+        }
     }
 
 
@@ -84,12 +86,6 @@ async function getPeersUploadSpeed(): Promise<PeersSpeed> {
 
     return speeds;
 }
-
-function ipToCountryCode(ip: string): string {
-    const location = lookup.get(ip)
-    return location?.country?.iso_code || "XX";
-}
-
 
 
 export default {

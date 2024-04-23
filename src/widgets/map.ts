@@ -1,7 +1,7 @@
 import blessed from "blessed";
 import contrib from "blessed-contrib";
 import qb from "../qbittorrent.js"
-import lookup from "../iplookup.js";
+import { ipToCoordinates } from "../iplookup.js";
 import { MapMarker, Peer } from "../types.js";
 
 
@@ -47,18 +47,11 @@ function peerToMarker(peer: Peer): MapMarker | false {
     const char = peer.dl_speed ? "▽" : "△";
 
     if (!peer.ip) return false;
-    const location = lookup.get(peer.ip);
-
-    if (!location) return false;
-
-    const lon = location.location?.longitude;
-    if (!lon) return false;
-    const lat = location.location?.latitude;
-    if (!lat) return false;
+    const location = ipToCoordinates(peer.ip);
 
     return {
-        lon: lon.toString(),
-        lat: lat.toString(),
+        lon: location.lon.toString(),
+        lat: location.lat.toString(),
         color: "white",
         char
     }
