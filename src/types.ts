@@ -31,3 +31,16 @@ export type Peer = {
     dl_speed: number;
     up_speed: number;
 }
+
+export type PeersSpeed = {
+    [key: string]: number;
+}
+
+export type PeersSpeeds = {
+    [key: string]: number[];
+}
+
+export type DisplayPeer = {
+    ip: string;
+    displayIp: string;
+}
