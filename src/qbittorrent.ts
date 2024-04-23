@@ -17,18 +17,17 @@ class QBittorrent {
         this.password = password;
     }
 
-    private async apiRequest(apiUrl: string, fetchOptions: RequestInit) {
+    private async apiRequest(apiUrl: string, fetchOptions?: RequestInit): Promise<Response> {
 
         if (!this.sid) throw new Error("No cookie configured, did you use login()?");
 
+        if (!fetchOptions) fetchOptions = {}
         if (!fetchOptions.method) fetchOptions.method = "POST";
         fetchOptions.headers = {
             "cookie": `SID=${this.sid}`
         }
 
-        const res = await fetch(this.url + apiUrl, fetchOptions);
-
-        return res;
+        return fetch(this.url + apiUrl, fetchOptions);
     }
 
 
@@ -47,7 +46,7 @@ class QBittorrent {
         if (!cookieHeader) throw new Error("Did not recieve a set-cookie header from qBittorrent");
 
         const cookies = cookie.parse(cookieHeader);
-        if (!cookies.SID) throw new Error("Did not recieve a valid cookie from qBittorrent")
+        if (!cookies.SID) throw new Error("Did not recieve a valid cookie from qBittorrent");
         this.sid = cookies.SID
     }
 
@@ -69,8 +68,9 @@ class QBittorrent {
 
         if (res.status !== 200) throw new Error(`Could not sync torrent peers: ${res.status} ${res.statusText}`);
 
-        return (await res.json() as TorrentPeers)
+        return (await res.json() as TorrentPeers);
     }
+
 }
 
 
