@@ -35,3 +35,12 @@ export function ipToCoordinates(ip: string): Location {
     if (lon && lat) return { lon, lat };
     return { lon: 0, lat: 0 };
 }
+
+export function ipToCityCountryCode(ip: string): string {
+    const location = lookup.get(ip);
+
+    const city = location?.city?.names.en || "unknown";
+    const country = location?.country?.iso_code || "XX";
+
+    return `${city} (${country})`;
+}

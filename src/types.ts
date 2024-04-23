@@ -21,6 +21,7 @@ export type Location = {
 
 export type Torrent = {
     hash: string;
+    name: string;
 }
 
 export type TorrentFilter = "active";
@@ -35,6 +36,7 @@ export type Peer = {
     ip: string;
     dl_speed: number;
     up_speed: number;
+    progress: number;
 }
 
 export type PeersSpeed = {
@@ -48,4 +50,13 @@ export type PeersSpeeds = {
 export type DisplayPeer = {
     ip: string;
     displayIp: string;
+}
+
+export type ListPeer = {
+    ip: string;
+    location: string;
+    torrent: string;
+    progress: number;
+    downloadSpeed: number;
+    uploadSpeed: number;
 }
