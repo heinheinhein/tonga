@@ -5,7 +5,7 @@ import { ListPeer } from "../types.js";
 import { anonymizeIp, ipToCityCountryCode } from "../iplookup.js";
 
 
-const keys = ["IP", "Location", "Torrent", "Progress", "↓ (kb/s)", "↑ (kb/s)"];
+const keys = ["IP", "Location", "Torrent", "↓ (B/s)", "↑ (B/s)", "Progress"];
 const anonymizedIpMap: { [key: string]: string } = {};
 
 async function updateWidget(widget: any, screen: blessed.Widgets.Screen): Promise<void> {
@@ -26,17 +26,21 @@ async function updateWidget(widget: any, screen: blessed.Widgets.Screen): Promis
 
 
     // sort the peers from most active to least
-    peers.sort((a, b) => (b.downloadSpeed + b.uploadSpeed) - (a.downloadSpeed + a.uploadSpeed));
+    peers.sort((a, b) => {
+        if (a.downloadSpeed || b.downloadSpeed) return b.downloadSpeed - a.downloadSpeed;
+        return b.uploadSpeed - a.uploadSpeed;
+    });
 
 
+    // TODO show up and download speed in kb/mb dependent on speed
     const data = peers.map(peer => {
         return [
             anonymizedIpMap[peer.ip],
             peer.location.substring(0, 20),
             peer.torrent.substring(0, 22),
-            `${Math.round(peer.progress * 1000) / 10}%`,
-            Math.round(peer.downloadSpeed / 1000),
-            Math.round(peer.uploadSpeed / 1000)
+            formatBytes(peer.downloadSpeed),
+            formatBytes(peer.uploadSpeed),
+            fixedLenghtString(`${Math.round(peer.progress * 1000) / 10}%`, 8)
         ];
     });
 
@@ -77,6 +81,27 @@ async function getListPeers(): Promise<ListPeer[]> {
 }
 
 
+function formatBytes(bytes: number) {
+    if (!+bytes) return fixedLenghtString("0 B", 9);
+
+    const k = 1024;
+    const decimals = 1;
+    const sizes = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return fixedLenghtString(`${parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))} ${sizes[i]}`, 9);
+}
+
+function fixedLenghtString(string: string, length: number) {
+    if (length - string.length < 1) return string;
+
+    string = " ".repeat(length - string.length) + string;
+
+    return string;
+}
+
+
 export default {
     widget: contrib.table,
     settings: {
@@ -84,7 +109,7 @@ export default {
         keys: true,
         interactive: false,
         columnSpacing: 6,
-        columnWidth: [15, 20, 22, 8, 8, 8],
+        columnWidth: [15, 20, 22, 10, 10, 8],
     },
     startUpdateInterval: (widget: any, screen: blessed.Widgets.Screen) => {
         updateWidget(widget, screen);
