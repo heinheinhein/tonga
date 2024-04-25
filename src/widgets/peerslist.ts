@@ -32,14 +32,14 @@ async function updateWidget(widget: any, screen: blessed.Widgets.Screen): Promis
     });
 
 
-    // TODO show up and download speed in kb/mb dependent on speed
+
     const data = peers.map(peer => {
         return [
             anonymizedIpMap[peer.ip],
             peer.location.substring(0, 20),
             peer.torrent.substring(0, 22),
-            formatBytes(peer.downloadSpeed),
-            formatBytes(peer.uploadSpeed),
+            fixedLenghtString(formatBytes(peer.downloadSpeed), 9),
+            fixedLenghtString(formatBytes(peer.uploadSpeed), 9),
             fixedLenghtString(`${Math.round(peer.progress * 1000) / 10}%`, 8)
         ];
     });
@@ -90,7 +90,7 @@ function formatBytes(bytes: number) {
 
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return fixedLenghtString(`${parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))} ${sizes[i]}`, 9);
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))} ${sizes[i]}`;
 }
 
 function fixedLenghtString(string: string, length: number) {
@@ -105,11 +105,11 @@ function fixedLenghtString(string: string, length: number) {
 export default {
     widget: contrib.table,
     settings: {
-        label: "Active Peers",
+        label: "Active Peers - List",
         keys: true,
         interactive: false,
         columnSpacing: 6,
-        columnWidth: [15, 20, 22, 10, 10, 8],
+        columnWidth: [15, 21, 22, 9, 9, 8],
     },
     startUpdateInterval: (widget: any, screen: blessed.Widgets.Screen) => {
         updateWidget(widget, screen);

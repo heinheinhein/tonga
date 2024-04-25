@@ -62,7 +62,7 @@ function peerToMarker(peer: Peer): MapMarker | false {
 export default {
     widget: contrib.map,
     settings: {
-        label: "Active Peers"
+        label: "Active Peers - Location"
     },
     startUpdateInterval: (widget: any, screen: blessed.Widgets.Screen) => {
         updateWidget(widget, screen);
