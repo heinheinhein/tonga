@@ -1,5 +1,5 @@
 import cookie from "cookie";
-import { Torrent, TorrentFilter, TorrentPeers } from "./types.js";
+import { Torrent, TorrentFilter, TorrentPeers, TransferInfo } from "./types.js";
 
 
 
@@ -71,6 +71,14 @@ class QBittorrent {
         return (await res.json() as TorrentPeers);
     }
 
+
+    async transferInfo(): Promise<TransferInfo> {
+        const res = await this.apiRequest("/api/v2/transfer/info");
+
+        if (res.status !== 200) throw new Error(`Could not get transfer info: ${res.status} ${res.statusText}`);
+
+        return (await res.json() as TransferInfo);
+    }
 }
 
 
