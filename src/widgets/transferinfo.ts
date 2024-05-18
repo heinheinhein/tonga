@@ -21,7 +21,7 @@ const downloadSeries: LineSeries = {
     }
 
 
-export async function updateTransferInfoWidget(screen: blessed.Widgets.Screen, widget: any): Promise<void> {
+export async function updateTransferInfoWidget(widget: any): Promise<void> {
 
     const transferInfo = await qb.transferInfo();
 
@@ -31,6 +31,4 @@ export async function updateTransferInfoWidget(screen: blessed.Widgets.Screen, w
     uploadSeries.y.shift();
 
     widget.setData([downloadSeries, uploadSeries]);
-
-    screen.render();
 }

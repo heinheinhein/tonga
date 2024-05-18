@@ -37,7 +37,7 @@ export class EnhancedPeer {
 
 
 
-export async function updatePeersWidgets(screen: blessed.Widgets.Screen, peersMapWidget: any, peersListWidget: any, uploadSparkLineWidget: any, downloadSparkLineWidget: any) {
+export async function updatePeersWidgets(peersMapWidget: any, peersListWidget: any, uploadSparkLineWidget: any, downloadSparkLineWidget: any) {
 
     const peers = await getEnhancedPeers();
 
@@ -47,8 +47,6 @@ export async function updatePeersWidgets(screen: blessed.Widgets.Screen, peersMa
     updatePeersList(peersListWidget, peers, anonymizedIpMap);
     updateUploadSparkLine(uploadSparkLineWidget, peers, anonymizedIpMap);
     updateDownloadSparkLine(downloadSparkLineWidget, peers, anonymizedIpMap);
-
-    screen.render();
 }
 
 

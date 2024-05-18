@@ -59,7 +59,7 @@ const downloadSparkline = grid.set(2, 13, 2, 3, contrib.sparkline, {
 
 
 // update the widgets about peers
-setInterval(updatePeersWidgets, 1000, screen,
+setInterval(updatePeersWidgets, 1000,
     activePeersLocation,
     activePeersList,
     uploadSparkLine,
@@ -67,9 +67,11 @@ setInterval(updatePeersWidgets, 1000, screen,
 );
 
 // update the transfer info widget
-setInterval(updateTransferInfoWidget, 1000, screen, transferSpeedLine);
+setInterval(updateTransferInfoWidget, 1000, transferSpeedLine);
 
-
+setInterval(() => {
+    screen.render();
+}, 1000)
 
 
 
