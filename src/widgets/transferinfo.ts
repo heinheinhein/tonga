@@ -1,27 +1,28 @@
 import blessed from "blessed";
-import contrib from "blessed-contrib";
 import qb from "../qbittorrent.js";
 import { LineSeries } from "../types.js";
 
 
-const xLength = 31;
-const xAxes = Array(xLength).fill(0).map((_value, index) => (xLength - index - 1).toString());
+const xAxisLength = 31;
+const xAxis = Array(xAxisLength).fill(0).map((_value, index) => (xAxisLength - index - 1).toString());
 
 
 const downloadSeries: LineSeries = {
     title: "download",
-    x: xAxes,
-    y: Array(xLength).fill(0),
+    x: xAxis,
+    y: Array(xAxis.length).fill(0),
     style: { line: "green" }
 },
     uploadSeries: LineSeries = {
         title: "upload",
-        x: xAxes,
-        y: Array(xLength).fill(0),
+        x: xAxis,
+        y: Array(xAxis.length).fill(0),
         style: { line: "cyan" }
     }
 
-async function updateWidget(widget: any, screen: blessed.Widgets.Screen): Promise<void> {
+
+export async function updateTransferInfoWidget(screen: blessed.Widgets.Screen, widget: any): Promise<void> {
+
     const transferInfo = await qb.transferInfo();
 
     downloadSeries.y.push(transferInfo.dl_info_speed / 1024 / 1024);
@@ -32,17 +33,4 @@ async function updateWidget(widget: any, screen: blessed.Widgets.Screen): Promis
     widget.setData([downloadSeries, uploadSeries]);
 
     screen.render();
-}
-
-export default {
-    widget: contrib.line,
-    settings: {
-        label: "Transfer Speed (MiB/s)",
-        showLegend: true,
-        showNthLabel: 10
-    },
-    startUpdateInterval: (widget: any, screen: blessed.Widgets.Screen) => {
-        updateWidget(widget, screen);
-        return setInterval(updateWidget, 1000, widget, screen);
-    }
 }

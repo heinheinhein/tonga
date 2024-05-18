@@ -1,33 +1,76 @@
 import blessed from "blessed";
 import contrib from "blessed-contrib";
-import peersLocation from "./widgets/peerslocation.js";
-import peersList from "./widgets/peerslist.js"
-import uploadSpeed from "./widgets/uploadspeed.js";
-import transferInfo from "./widgets/transferinfo.js";
 
-const screen = blessed.screen({
-});
+import { updatePeersWidgets } from "./widgets/peers.js";
+import { updateTransferInfoWidget } from "./widgets/transferinfo.js";
+
+
+const screen = blessed.screen({});
 
 const gridSize = {
     width: 16,
     height: 9
 };
+
 const grid = new contrib.grid({ cols: gridSize.width, rows: gridSize.height, screen: screen });
 
 
-// set the grid components
-// grid.set(Y, X, height, width, widget, settings);
-const gridMap = grid.set(0, 0, 5, 9, peersLocation.widget, peersLocation.settings);
-const gridTable = grid.set(5, 0, 4, 9, peersList.widget, peersList.settings);
-const gridSparkLine = grid.set(4, 9, 2, 3, uploadSpeed.widget, uploadSpeed.settings);
-const gridLine = grid.set(0, 9, 4, 7, transferInfo.widget, transferInfo.settings);
+// widgets
+const activePeersLocation = grid.set(0, 0, 5, 9, contrib.map, {
+    label: "Active Peers - Location"
+});
+
+const activePeersList = grid.set(5, 0, 4, 9, contrib.table, {
+    label: "Active Peers - List",
+    keys: true,
+    interactive: false,
+    columnSpacing: 6,
+    columnWidth: [17, 21, 22, 10, 10, 8]
+});
+
+const transferSpeedLine = grid.set(0, 9, 4, 4, contrib.line, {
+    label: "Transfer Speed (MiB/s)",
+    showLegend: true,
+    showNthLabel: 10
+});
+
+const uploadSparkLine = grid.set(0, 13, 2, 3, contrib.sparkline, {
+    label: "Upload Speed",
+    tags: true,
+    style: {
+        fg: "blue",
+        text: "white",
+    },
+    valign: "middle",
+});
+
+const downloadSparkline = grid.set(2, 13, 2, 3, contrib.sparkline, {
+    label: "Download Speed",
+    tags: true,
+    style: {
+        fg: "green",
+        text: "white",
+    },
+    valign: "middle"
+});
 
 
-// for the dynamic elements in the grid, we need to update them periodically
-peersLocation.startUpdateInterval(gridMap, screen);
-uploadSpeed.startUpdateInterval(gridSparkLine, screen);
-peersList.startUpdateInterval(gridTable, screen);
-transferInfo.startUpdateInterval(gridLine, screen);
+
+
+
+// update the widgets about peers
+setInterval(updatePeersWidgets, 1000, screen,
+    activePeersLocation,
+    activePeersList,
+    uploadSparkLine,
+    downloadSparkline,
+);
+
+// update the transfer info widget
+setInterval(updateTransferInfoWidget, 1000, screen, transferSpeedLine);
+
+
+
 
 
 screen.key(["escape", "q", "C-c"], function (_ch, _key) {

@@ -1,23 +1,4 @@
-export type MapMarker = {
-    lon: string;
-    lat: string;
-    color: TerminalColor;
-    char: string;
-};
-
-export type TerminalColor = "black" |
-    "red" |
-    "green" |
-    "yellow" |
-    "blue" |
-    "magenta" |
-    "cyan" |
-    "white";
-
-export type Location = {
-    lon: number;
-    lat: number;
-};
+// qBittorrent //
 
 export type Torrent = {
     hash: string;
@@ -47,26 +28,18 @@ export type TransferInfo = {
     // connection_status: "connected" | "firewalled" | "disconnected";
 };
 
-export type PeersSpeed = {
-    [key: string]: number;
+// /qBittorrent //
+
+
+export type MapMarker = {
+    lon: string;
+    lat: string;
+    color: string;
+    char: string;
 };
 
 export type PeersSpeeds = {
     [key: string]: number[];
-};
-
-export type DisplayPeer = {
-    ip: string;
-    displayIp: string;
-};
-
-export type ListPeer = {
-    ip: string;
-    location: string;
-    torrent: string;
-    progress: number;
-    downloadSpeed: number;
-    uploadSpeed: number;
 };
 
 export type LineSeries = {
@@ -74,4 +47,16 @@ export type LineSeries = {
     x: string[];
     y: number[];
     style?: { line: string }
-}
+};
+
+export type Location = {
+    country: string;
+    countryCode: string;
+    city: string;
+    latitude: number;
+    longitude: number;
+};
+
+export type IpMap = {
+    [key: string]: string;
+};
