@@ -25,7 +25,7 @@ export type TransferInfo = {
     up_info_speed: number;
     // dl_rate_limit: number;
     // up_rate_limit: number;
-    // connection_status: "connected" | "firewalled" | "disconnected";
+    connection_status: "connected" | "firewalled" | "disconnected";
 };
 
 // /qBittorrent //

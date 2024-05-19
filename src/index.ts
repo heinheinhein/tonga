@@ -2,7 +2,7 @@ import blessed from "blessed";
 import contrib from "blessed-contrib";
 
 import { updatePeersWidgets } from "./widgets/peers.js";
-import { updateTransferInfoWidget } from "./widgets/transferinfo.js";
+import { updateTransferInfoWidgets } from "./widgets/transferinfo.js";
 
 
 const screen = blessed.screen({});
@@ -38,7 +38,7 @@ const uploadSparkLine = grid.set(0, 13, 2, 3, contrib.sparkline, {
     label: "Upload Speed",
     tags: true,
     style: {
-        fg: "blue",
+        fg: "cyan",
         text: "white",
     },
     valign: "middle",
@@ -54,24 +54,30 @@ const downloadSparkline = grid.set(2, 13, 2, 3, contrib.sparkline, {
     valign: "middle"
 });
 
+const connectionStatusIcon = grid.set(4, 9, 2, 2, blessed.box, {
+    label: "Connection Status",
+    align: "center"
+});
 
 
 
 
 // update the widgets about peers
-setInterval(updatePeersWidgets, 1000,
+setInterval(updatePeersWidgets, 1e3,
     activePeersLocation,
     activePeersList,
     uploadSparkLine,
     downloadSparkline,
 );
 
-// update the transfer info widget
-setInterval(updateTransferInfoWidget, 1000, transferSpeedLine);
+// update the transfer info widgets
+setInterval(updateTransferInfoWidgets, 1e3,
+    transferSpeedLine,
+    connectionStatusIcon
+);
 
-setInterval(() => {
-    screen.render();
-}, 1000)
+
+setInterval(() => { screen.render(); }, 1e3)
 
 
 
