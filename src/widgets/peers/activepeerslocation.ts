@@ -1,5 +1,5 @@
-import { EnhancedPeer } from "./peers.js";
-import { MapMarker } from "../types.js";
+import { EnhancedPeer } from "../peers.js";
+import { MapMarker } from "../../types.js";
 
 
 export function updatePeersMap(widget: any, peers: EnhancedPeer[]): void {

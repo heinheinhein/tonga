@@ -3,9 +3,9 @@ import lookup from "../iplookup.js";
 import qb from "../qbittorrent.js";
 import { anonymizeIp } from "../util.js";
 import { IpMap, Location, Peer, Torrent } from "../types.js";
-import { updatePeersMap } from "./activepeerslocation.js";
-import { updatePeersList } from "./activepeerslist.js"
-import { updateDownloadSparkLine, updateUploadSparkLine } from "./sparkline.js"
+import { updatePeersMap } from "./peers/activepeerslocation.js";
+import { updatePeersList } from "./peers/activepeerslist.js"
+import { updateDownloadSparkLine, updateUploadSparkLine } from "./peers/sparkline.js"
 
 
 

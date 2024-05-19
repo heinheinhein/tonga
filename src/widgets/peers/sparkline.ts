@@ -1,5 +1,5 @@
-import { EnhancedPeer } from "./peers.js";
-import { IpMap, PeersSpeeds } from "../types.js";
+import { EnhancedPeer } from "../peers.js";
+import { IpMap, PeersSpeeds } from "../../types.js";
 
 
 let historicUploadSpeeds: PeersSpeeds = {};

@@ -1,6 +1,6 @@
-import { EnhancedPeer } from "./peers.js";
-import { IpMap } from "../types.js";
-import { fixStringLength, formatBytes } from "../util.js";
+import { EnhancedPeer } from "../peers.js";
+import { IpMap } from "../../types.js";
+import { fixStringLength, formatBytes } from "../../util.js";
 
 
 const keys = ["IP", "Location", "Torrent", "↓ (B/s)", "↑ (B/s)", "Progress"];
@@ -30,6 +30,3 @@ export function updatePeersList(widget: any, peers: EnhancedPeer[], anonymizedIp
         data: data
     });
 }
-
-
-
