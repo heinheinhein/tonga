@@ -1,11 +1,11 @@
-import blessed from "blessed";
 import lookup from "../iplookup.js";
 import qb from "../qbittorrent.js";
 import { anonymizeIp } from "../util.js";
 import { IpMap, Location, Peer, Torrent } from "../types.js";
 import { updatePeersMap } from "./peers/activepeerslocation.js";
 import { updatePeersList } from "./peers/activepeerslist.js"
-import { updateDownloadSparkLine, updateUploadSparkLine } from "./peers/sparkline.js"
+import { updateDownloadSparkLine, updateUploadSparkLine } from "./peers/sparkline.js";
+import { updatePeersCountriesHistogram } from "./peers/activepeerscountries.js";
 
 
 
@@ -37,7 +37,12 @@ export class EnhancedPeer {
 
 
 
-export async function updatePeersWidgets(peersMapWidget: any, peersListWidget: any, uploadSparkLineWidget: any, downloadSparkLineWidget: any) {
+export async function updatePeersWidgets(
+    peersMapWidget: any,
+    peersListWidget: any,
+    uploadSparkLineWidget: any,
+    downloadSparkLineWidget: any,
+    peersCountriesWidget: any) {
 
     const peers = await getEnhancedPeers();
 
@@ -47,6 +52,7 @@ export async function updatePeersWidgets(peersMapWidget: any, peersListWidget: a
     updatePeersList(peersListWidget, peers, anonymizedIpMap);
     updateUploadSparkLine(uploadSparkLineWidget, peers, anonymizedIpMap);
     updateDownloadSparkLine(downloadSparkLineWidget, peers, anonymizedIpMap);
+    updatePeersCountriesHistogram(peersCountriesWidget, peers);
 }
 
 
@@ -87,4 +93,3 @@ function updateAnonymizedIpsMap(peers: EnhancedPeer[]): void {
         if (!activePeers.includes(ip)) delete anonymizedIpMap[ip];
     }
 }
-

@@ -59,7 +59,13 @@ const connectionStatusIcon = grid.set(4, 9, 2, 2, blessed.box, {
     align: "center"
 });
 
-
+const activePeersCountriesHist = grid.set(4, 11, 3, 5, contrib.bar, {
+    label: "Active Peers - Countries",
+    barWidth: 3,
+    barSpacing: 6,
+    xOffset: 2,
+    maxHeight: 2
+});
 
 
 // update the widgets about peers
@@ -68,6 +74,7 @@ setInterval(updatePeersWidgets, 1e3,
     activePeersList,
     uploadSparkLine,
     downloadSparkline,
+    activePeersCountriesHist
 );
 
 // update the transfer info widgets
