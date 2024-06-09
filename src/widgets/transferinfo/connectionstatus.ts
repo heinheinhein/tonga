@@ -1,4 +1,4 @@
-import colors from "colors/safe.js";
+import chalk from "chalk";
 import { TransferInfo } from "../../types.js";
 
 
@@ -26,14 +26,14 @@ const connectedIcon =
 export function updateConnectionStatusIcon(widget: any, transferInfo: TransferInfo): void {
 
     if (transferInfo.connection_status === "connected") {
-        widget.setContent(colors.green(connectedIcon) + "\nCONNECTED");
+        widget.setContent(chalk.green(connectedIcon) + "\nCONNECTED");
     }
 
     if (transferInfo.connection_status === "disconnected") {
-        widget.setContent(colors.red(connectedIcon) + "\nDISCONNECTED");
+        widget.setContent(chalk.red(connectedIcon) + "\nDISCONNECTED");
     }
 
     if (transferInfo.connection_status === "firewalled") {
-        widget.setContent(colors.red(firewalledIcon) + "\nFIREWALLED");
+        widget.setContent(chalk.red(firewalledIcon) + "\nFIREWALLED");
     }
 }

@@ -1,10 +1,11 @@
 import { EnhancedPeer } from "../peers.js";
 import { IpMap } from "../../types.js";
 import { fixStringLength, formatBytes } from "../../util.js";
+import chalk from 'chalk';
 
 
-const keys = ["IP", "Location", "Torrent", "↓ (B/s)", "↑ (B/s)", "Progress"];
-
+const keys = ["IP", "Location", "Torrent", "↓ (B/s)", "↑ (B/s)", "Progress"]
+    .map((key) => chalk.inverse(key));
 
 export function updatePeersList(widget: any, peers: EnhancedPeer[], anonymizedIpMap: IpMap): void {
     // sort the peers from most active to least
