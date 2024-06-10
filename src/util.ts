@@ -23,7 +23,7 @@ export function anonymizeIp(ip: string): string {
  * @returns Formatted bytes in a format similar to `123.4 MiB`
  */
 export function formatBytes(bytes: number): string {
-    if (!+bytes) return fixStringLength("0 B", 9);
+    if (!+bytes) return "0 B";
 
     const k = 1024;
     const decimals = 1;
