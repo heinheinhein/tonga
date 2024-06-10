@@ -3,6 +3,7 @@ import contrib from "blessed-contrib";
 
 import { updatePeersWidgets } from "./widgets/peers.js";
 import { updateTransferInfoWidgets } from "./widgets/transferinfo.js";
+import { updateSystemInfoWidget } from "./widgets/systeminfo.js";
 
 
 const screen = blessed.screen({});
@@ -16,6 +17,7 @@ const grid = new contrib.grid({ cols: gridSize.width, rows: gridSize.height, scr
 
 
 // widgets
+//  grid location is (y, x, heigth, width) which is very confusing
 const activePeersLocation = grid.set(0, 0, 5, 9, contrib.map, {
     label: "Active Peers - Location"
 });
@@ -31,7 +33,8 @@ const activePeersList = grid.set(5, 0, 4, 9, contrib.table, {
 const transferSpeedLine = grid.set(0, 9, 4, 4, contrib.line, {
     label: "Transfer Speed (MiB/s)",
     showLegend: true,
-    showNthLabel: 10
+    showNthLabel: 10,
+    legend: { width: 10 }
 });
 
 const uploadSparkLine = grid.set(0, 13, 2, 3, contrib.sparkline, {
@@ -54,17 +57,24 @@ const downloadSparkline = grid.set(2, 13, 2, 3, contrib.sparkline, {
     valign: "middle"
 });
 
-const connectionStatusIcon = grid.set(4, 9, 2, 2, blessed.box, {
-    label: "Connection Status",
-    align: "center"
-});
-
-const activePeersCountriesHist = grid.set(4, 11, 3, 5, contrib.bar, {
+const activePeersCountriesHist = grid.set(4, 9, 4, 5, contrib.bar, {
     label: "Active Peers - Countries",
     barWidth: 3,
     barSpacing: 6,
     xOffset: 2,
     maxHeight: 2
+});
+
+
+const connectionStatusIcon = grid.set(4, 14, 2, 2, blessed.box, {
+    label: "Connection Status",
+    align: "center"
+});
+
+
+const systemInfoBox = grid.set(8, 14, 1, 2, blessed.box, {
+    label: "qBittorrent Info",
+    align: "center"
 });
 
 
@@ -83,8 +93,11 @@ setInterval(updateTransferInfoWidgets, 1e3,
     connectionStatusIcon
 );
 
+// update the system info box
+updateSystemInfoWidget(systemInfoBox);
+setInterval(updateSystemInfoWidget, 60e3, systemInfoBox);
 
-setInterval(() => { screen.render(); }, 1e3)
+setInterval(() => { screen.render(); }, 1e3);
 
 
 

@@ -21,11 +21,11 @@ class QBittorrent {
 
         if (!this.sid) throw new Error("No cookie configured, did you use login()?");
 
-        if (!fetchOptions) fetchOptions = {}
+        if (!fetchOptions) fetchOptions = {};
         if (!fetchOptions.method) fetchOptions.method = "POST";
         fetchOptions.headers = {
             "cookie": `SID=${this.sid}`
-        }
+        };
 
         return fetch(this.url + apiUrl, fetchOptions);
     }
@@ -61,6 +61,7 @@ class QBittorrent {
         return (await res.json() as Torrent[]);
     }
 
+
     async syncTorrentPeers(hash: string): Promise<TorrentPeers> {
         const res = await this.apiRequest("/api/v2/sync/torrentPeers", {
             body: new URLSearchParams({ hash })
@@ -78,6 +79,24 @@ class QBittorrent {
         if (res.status !== 200) throw new Error(`Could not get transfer info: ${res.status} ${res.statusText}`);
 
         return (await res.json() as TransferInfo);
+    }
+
+
+    async appVersion(): Promise<string> {
+        const res = await this.apiRequest("/api/v2/app/version");
+
+        if (res.status !== 200) throw new Error(`Could not get app version: ${res.status} ${res.statusText}`);
+
+        return await res.text();
+    }
+
+    
+    async appWebapiVersion(): Promise<string> {
+        const res = await this.apiRequest("/api/v2/app/webapiVersion");
+
+        if (res.status !== 200) throw new Error(`Could not get api version: ${res.status} ${res.statusText}`);
+
+        return await res.text();
     }
 }
 
