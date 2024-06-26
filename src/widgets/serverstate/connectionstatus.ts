@@ -1,5 +1,6 @@
+import blessed from "blessed";
 import chalk from "chalk";
-import { TransferInfo } from "../../types.js";
+import { ServerState } from "../../types.js";
 
 
 const firewalledIcon =
@@ -23,17 +24,17 @@ const connectedIcon =
     "⠀⠀⠀⠀⠉⠙⠛⠛⠛⠉    ";
 
 
-export function updateConnectionStatusIcon(widget: any, transferInfo: TransferInfo): void {
+export function updateConnectionStatusIcon(widget: blessed.Widgets.BoxElement, serverState: ServerState): void {
 
-    if (transferInfo.connection_status === "connected") {
+    if (serverState.connection_status === "connected") {
         widget.setContent(chalk.green(connectedIcon) + "\nCONNECTED");
     }
 
-    if (transferInfo.connection_status === "disconnected") {
+    if (serverState.connection_status === "disconnected") {
         widget.setContent(chalk.red(connectedIcon) + "\nDISCONNECTED");
     }
 
-    if (transferInfo.connection_status === "firewalled") {
+    if (serverState.connection_status === "firewalled") {
         widget.setContent(chalk.red(firewalledIcon) + "\nFIREWALLED");
     }
 }

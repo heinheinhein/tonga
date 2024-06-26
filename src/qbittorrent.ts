@@ -1,5 +1,5 @@
 import cookie from "cookie";
-import { Torrent, TorrentFilter, TorrentPeers, TransferInfo } from "./types.js";
+import { Maindata, TorrentPeers } from "./types.js";
 
 
 
@@ -10,12 +10,14 @@ class QBittorrent {
     private password: string;
     private sid?: string;
 
+
     constructor(url: string, user: string, password: string) {
         if (url.endsWith("/")) url = url.substring(0, url.length - 1);
         this.url = url;
         this.user = user;
         this.password = password;
     }
+
 
     private async apiRequest(apiUrl: string, fetchOptions?: RequestInit): Promise<Response> {
 
@@ -51,14 +53,12 @@ class QBittorrent {
     }
 
 
-    async torrentsInfo(filter?: TorrentFilter): Promise<Torrent[]> {
-        const res = await this.apiRequest("/api/v2/torrents/info", {
-            body: filter ? new URLSearchParams({ filter }) : null
-        });
+    async syncMaindata(): Promise<Maindata> {
+        const res = await this.apiRequest("/api/v2/sync/maindata");
 
-        if (res.status !== 200) throw new Error(`Could not get torrents info: ${res.status} ${res.statusText}`);
+        if (res.status !== 200) throw new Error(`Could not sync main data: ${res.status} ${res.statusText}`);
 
-        return (await res.json() as Torrent[]);
+        return (await res.json() as Maindata);
     }
 
 
@@ -70,33 +70,6 @@ class QBittorrent {
         if (res.status !== 200) throw new Error(`Could not sync torrent peers: ${res.status} ${res.statusText}`);
 
         return (await res.json() as TorrentPeers);
-    }
-
-
-    async transferInfo(): Promise<TransferInfo> {
-        const res = await this.apiRequest("/api/v2/transfer/info");
-
-        if (res.status !== 200) throw new Error(`Could not get transfer info: ${res.status} ${res.statusText}`);
-
-        return (await res.json() as TransferInfo);
-    }
-
-
-    async appVersion(): Promise<string> {
-        const res = await this.apiRequest("/api/v2/app/version");
-
-        if (res.status !== 200) throw new Error(`Could not get app version: ${res.status} ${res.statusText}`);
-
-        return await res.text();
-    }
-
-    
-    async appWebapiVersion(): Promise<string> {
-        const res = await this.apiRequest("/api/v2/app/webapiVersion");
-
-        if (res.status !== 200) throw new Error(`Could not get api version: ${res.status} ${res.statusText}`);
-
-        return await res.text();
     }
 }
 

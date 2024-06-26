@@ -1,6 +1,7 @@
+import contrib from "blessed-contrib";
 import { EnhancedPeer } from "../peers.js";
 
-export function updatePeersCountriesHistogram(widget: any, peers: EnhancedPeer[]): void {
+export function updatePeersCountriesHistogram(widget: contrib.Widgets.BarElement, peers: EnhancedPeer[]): void {
 
     const countriesCount: { [key: string]: number } = {};
 
@@ -20,7 +21,7 @@ export function updatePeersCountriesHistogram(widget: any, peers: EnhancedPeer[]
 
     countries.sort((a, b) => b.value - a.value);
 
-    countries = countries.slice(0, 10);
+    countries.splice(7);
 
     widget.setData({
         titles: countries.map(country => country.countryCode),

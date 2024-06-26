@@ -48,3 +48,13 @@ export function fixStringLength(string: string, length: number, prepend?: boolea
 
     return string;
 }
+
+/**
+ * Substring while appending ellipsis if text is removed
+ * @param string String to be substringed
+ * @param length Desired length of the string
+ * @returns String with ellipsis appended if text is removed
+ */
+export function substringWithEllipsis(string: string, length: number): string {
+    return string.length > length ? string.substring(0, length - 1) + "…" : string;
+}

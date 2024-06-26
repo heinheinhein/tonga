@@ -1,3 +1,4 @@
+import contrib from "blessed-contrib";
 import { EnhancedPeer } from "../peers.js";
 import { IpMap, PeersSpeeds } from "../../types.js";
 
@@ -7,10 +8,10 @@ let featuredUploads: string[] = [];
 let historicDownloadSpeeds: PeersSpeeds = {};
 let featuredDownloads: string[] = [];
 
-const yAxisLength = 37;
+const yAxisLength = 34;
 
 
-export function updateUploadSparkLine(widget: any, peers: EnhancedPeer[], anonymizedIpMap: IpMap): void {
+export function updateUploadSparkLine(widget: contrib.Widgets.SparklineElement, peers: EnhancedPeer[], anonymizedIpMap: IpMap): void {
 
     const uploadingPeers = peers.filter(peer => peer.uploadSpeed);
 
@@ -31,17 +32,19 @@ export function updateUploadSparkLine(widget: any, peers: EnhancedPeer[], anonym
     widget.setData(featuredUploadIps, featuredUploadSpeeds);
 
     if (featuredUploads.length === 0) {
+        //@ts-ignore: property align does in fact exist
         widget.align = "center";
         widget.style.fg = "white";
         widget.content = "Not uploading anything…";
     } else {
+        //@ts-ignore: property align does in fact exist
         widget.align = "left";
         widget.style.fg = "blue";
     }
 }
 
 
-export function updateDownloadSparkLine(widget: any, peers: EnhancedPeer[], anonymizedIpMap: IpMap): void {
+export function updateDownloadSparkLine(widget: contrib.Widgets.SparklineElement, peers: EnhancedPeer[], anonymizedIpMap: IpMap): void {
 
     const downloadingPeers = peers.filter(peer => peer.downloadSpeed);
 
@@ -62,10 +65,12 @@ export function updateDownloadSparkLine(widget: any, peers: EnhancedPeer[], anon
     widget.setData(featuredDownloadIps, featuredDownloadSpeeds);
 
     if (featuredDownloads.length === 0) {
+        //@ts-ignore: property align does in fact exist
         widget.align = "center";
         widget.style.fg = "white";
         widget.content = "Not downloading anything…";
     } else {
+        //@ts-ignore: property align does in fact exist 
         widget.align = "left";
         widget.style.fg = "green";
     }
