@@ -4,7 +4,9 @@
     "private": "true",
     "type": "module",
     "scripts": {
-        "start": "tsc && node --env-file=.env dist/index.js"
+        "start": "npm run build && npm run dashboard",
+        "build": "tsc",
+        "dashboard": "node --env-file=.env dist/dashboard/index.js"
     },
     "devDependencies": {
         "@tsconfig/node20": "^20.1.4",
