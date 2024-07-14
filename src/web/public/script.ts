@@ -1,7 +1,7 @@
 import { Terminal } from "@xterm/xterm";
 
 
-async function init(): Promise<void> {
+function init(): void {
 
     const termElement = document.getElementById("terminal");
 
@@ -13,7 +13,14 @@ async function init(): Promise<void> {
     const term = new Terminal({ cols, rows });
 
     term.open(termElement);
-    term.write("Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ");
+
+
+    const stdout = new EventSource("/stdout");
+
+    stdout.addEventListener("open", (_event) => console.log("connected"));
+    stdout.addEventListener("termdata", (event) => {
+        term.write(event.data)
+    });
 }
 
 init();

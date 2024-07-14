@@ -18,6 +18,8 @@
     "dependencies": {
         "@hapi/hapi": "^21.3.10",
         "@hapi/inert": "^7.1.0",
+        "@xterm/addon-serialize": "^0.13.0",
+        "@xterm/headless": "^5.5.0",
         "@xterm/xterm": "^5.5.0",
         "blessed": "^0.1.81",
         "blessed-contrib": "^4.11.0",
