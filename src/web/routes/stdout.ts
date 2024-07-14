@@ -28,7 +28,7 @@ export const stdout: ServerRoute = {
 
         // split the buffer so that only the output from blessed is sent to the client, not the command used to start the dashboard
         // "[?1049h" is the first ansi escape sequence sent by blessed (to enable the alternative screen buffer (https://en.wikipedia.org/wiki/ANSI_escape_code))
-        buffer = buffer.split("[?1049h")[1];
+        buffer = buffer.split("\x1b[?1049h")[1];
 
         responseStream.write("id: 0\n");
         responseStream.write("event: termdata\n");
