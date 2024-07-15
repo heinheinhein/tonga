@@ -30,11 +30,12 @@ export const stdout: ServerRoute = {
         // "[?1049h" is the first ansi escape sequence sent by blessed (to enable the alternative screen buffer (https://en.wikipedia.org/wiki/ANSI_escape_code))
         buffer = buffer.split("\x1b[?1049h")[1];
 
-        responseStream.write("id: 0\n");
-        responseStream.write("event: termdata\n");
-        responseStream.write(`data: ${buffer}\n`);
-        responseStream.write("\n");
-
+        if (buffer) {
+            responseStream.write("id: 0\n");
+            responseStream.write("event: termdata\n");
+            responseStream.write(`data: ${buffer}\n`);
+            responseStream.write("\n");
+        }
 
         // send new data from the ptyprocess to the responsestream
         let i = 1;
