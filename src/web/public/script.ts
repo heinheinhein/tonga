@@ -1,19 +1,42 @@
 import { Terminal } from "@xterm/xterm";
+//@ts-ignore: gets the location of an asset after build
+import fontUrl from "./cascadia-code/CascadiaMono.woff2";
 
 
-function init(): void {
+async function init(): Promise<void> {
 
-    const term = createTerminal();
+    await loadFonts();
 
-    connectToStdout(term);
+    const terminal = createTerminal();
+
+    connectToStdout(terminal);
 }
+
+
+async function loadFonts(): Promise<void> {
+    const fontFile = new FontFace(
+        "Cascadia Mono",
+        `url(${fontUrl})`,
+    );
+
+    document.fonts.add(fontFile);
+
+    await fontFile.load();
+    return;
+}
+
 
 function createTerminal(): Terminal {
 
     const cols = 192,
         rows = 49;
 
-    const term = new Terminal({ cols, rows });
+    const terminal = new Terminal({
+        cols,
+        rows,
+        disableStdin: true,
+        fontFamily: "Cascadia Mono",
+    });
 
     let termElement = document.getElementById("terminal");
     if (!termElement) {
@@ -22,7 +45,10 @@ function createTerminal(): Terminal {
         document.body.append(termElement);
     }
 
-    term.open(termElement);
+    terminal.open(termElement);
+
+    // hide cursor
+    terminal.write("\x1b[?25l");
 
     const cowsay = [
         " _____________",
@@ -44,10 +70,10 @@ function createTerminal(): Terminal {
 
     cowsay.forEach((line, index) => {
         // move cursor and write line
-        term.write(`\x1b[${cursorY + index};${cursorX}H` + line);
+        terminal.write(`\x1b[${cursorY + index};${cursorX}H` + line);
     });
 
-    return term;
+    return terminal;
 }
 
 function connectToStdout(terminal: Terminal): EventSource {
@@ -57,8 +83,8 @@ function connectToStdout(terminal: Terminal): EventSource {
     stdout.addEventListener("open", (_event) => { });
 
     stdout.addEventListener("termdata", (event) => {
-        // if its the first message, clear the terminal (terminal.clear() does not do the job for some reason)
-        if (event.lastEventId === "0") terminal.write("\x1b[2J");
+        // if its the first message, clear the terminal
+        if (event.lastEventId === "0") terminal.clear();
 
         terminal.write(event.data);
     });

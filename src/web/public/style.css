@@ -5,4 +5,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: #000000;
+}
+
+/* prevent greyed out scrollbar from showing up on chrome */
+.xterm .xterm-viewport {
+    overflow-y: auto !important;
+}
+
+/* fix for small misalignment issue when using 16px fontsize */
+.xterm .xterm-screen .xterm-rows {
+    letter-spacing: -0.01px !important;
 }
