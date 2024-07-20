@@ -25,7 +25,7 @@ export function updatePeersList(widget: contrib.Widgets.TableElement, peers: Enh
         return [
             anonymizedIpMap[peer.ip],
             substringWithEllipsis(`${peer.location.city}, ${peer.location.countryCode}`, 16),
-            peer.torrent.substring(0, 20),
+            substringWithEllipsis(peer.torrent, 20),
             fixStringLength(formatBytes(peer.downloadSpeed), 10, true),
             fixStringLength(formatBytes(peer.uploadSpeed), 10, true),
             fixStringLength(`${Math.round(peer.progress * 1000) / 10}%`, 8, true)

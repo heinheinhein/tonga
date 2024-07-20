@@ -68,7 +68,7 @@ async function getEnhancedPeers(torrents: Torrents): Promise<EnhancedPeer[]> {
 
             // check if this specific peer is actually downloading or uploading
             if (torrentPeer.up_speed || torrentPeer.dl_speed) {
-                const peer = new EnhancedPeer(torrentPeer, torrents[torrentHash].name);
+                const peer = new EnhancedPeer(torrentPeer, process.env.DISPLAY_TORRENT_HASHES === "true" ? torrentHash : torrents[torrentHash].name);
                 peers.push(peer);
             }
         }
