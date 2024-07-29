@@ -12,6 +12,21 @@ class ResponseStream extends Stream.PassThrough {
 }
 
 
+function sanitizeBuffer(buffer: string): string {
+    // remove newlines from buffer because this breaks the event-stream and are not needed
+    buffer = buffer.replaceAll("\r", "").replaceAll("\n", "");
+
+    // bold text fricks up the char width and spacing on firefox on linux (idk why)
+    //  so here are some replaceAlls to remove the bold ansi escape codes from the buffer :)
+    //  the escape code is "[1m", but can be chucked in with other styling codes like color, ie "[32;1m" (set green foreground with 32 and bold with 1)
+    //  more examples here: https://gist.github.com/ConnerWill/d4b6c776b509add763e17f9f113fd25b#colors--graphics-mode
+    buffer = buffer.replaceAll("\x1b[32;7;1m", "\x1b[32;7m");
+    buffer = buffer.replaceAll("\x1b[32;1m", "\x1b[32m");
+
+    return buffer;
+}
+
+
 export const stdout: ServerRoute = {
     method: "GET",
     path: "/stdout",
@@ -20,14 +35,14 @@ export const stdout: ServerRoute = {
         const responseStream = new ResponseStream();
 
         // send entire buffer of the terminal to the responsestream
-        // this is because new data from the ptyprocess only contains parts of the terminal which are updated
+        // this is because new data from the ptyprocess only contains parts of the terminal which are changed compared to the previous state
         let buffer = serializeAddon.serialize();
 
-        // remove newlines from buffer because this breaks the event-stream
-        buffer = buffer.replaceAll("\r", "").replaceAll("\n", "")
+        // remove some breaking characters
+        buffer = sanitizeBuffer(buffer);
 
         // split the buffer so that only the output from blessed is sent to the client, not the command used to start the dashboard
-        // "[?1049h" is the first ansi escape sequence sent by blessed (to enable the alternative screen buffer (https://en.wikipedia.org/wiki/ANSI_escape_code))
+        // "[?1049h" is the first ansi escape sequence sent by blessed (to enable the alternative screen buffer)
         buffer = buffer.split("\x1b[?1049h")[1];
 
         if (buffer) {
@@ -40,6 +55,8 @@ export const stdout: ServerRoute = {
         // send new data from the ptyprocess to the responsestream
         let i = 1;
         const dataListener = process.onData((data) => {
+            data = sanitizeBuffer(data);
+
             responseStream.compressor.flush();
             responseStream.write(`id: ${i}\n`);
             responseStream.write("event: termdata\n");
