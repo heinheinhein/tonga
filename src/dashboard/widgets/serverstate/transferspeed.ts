@@ -17,7 +17,7 @@ const uploadSeries: LineSeries = {
     title: "upload",
     x: xAxis,
     y: Array(xAxis.length).fill(0),
-    style: { line: "cyan" }
+    style: { line: "blue" }
 };
 
 

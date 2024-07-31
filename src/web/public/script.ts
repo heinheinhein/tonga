@@ -36,6 +36,15 @@ function createTerminal(): Terminal {
         rows,
         disableStdin: true,
         fontFamily: "Cascadia Mono",
+        theme: {
+            black: "#000000",
+            green: "#40d921",
+            blue: "#268BF6",
+            red: "#FF3131",
+            cyan: "#CCCCCC",
+            selectionBackground: "#000000",
+            selectionForeground: "#FFFFFF"
+        }
     });
 
     let termElement = document.getElementById("terminal");

@@ -61,7 +61,9 @@ const activePeersCountriesHist: contrib.Widgets.BarElement = grid.set(0, 9, 4, 4
     barWidth: 3,
     barSpacing: 2,
     xOffset: 3,
-    maxHeight: 2
+    maxHeight: 2,
+    barFgColor: "black",
+    barBgColor: "green",
 });
 
 
@@ -89,7 +91,7 @@ const alltimeStatsInfoBox: blessed.Widgets.BoxElement = grid.set(8, 12, 1, 2, bl
 });
 
 
-const timeBox:blessed.Widgets.BoxElement = grid.set(8, 14, 1, 2, blessed.box, {
+const timeBox: blessed.Widgets.BoxElement = grid.set(8, 14, 1, 2, blessed.box, {
     align: "center",
     content: "\n00:00"
 })
