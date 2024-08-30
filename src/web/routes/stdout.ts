@@ -17,11 +17,17 @@ function sanitizeBuffer(buffer: string): string {
     buffer = buffer.replaceAll("\r", "").replaceAll("\n", "");
 
     // bold text fricks up the char width and spacing on firefox on linux (idk why)
-    //  so here are some replaceAlls to remove the bold ansi escape codes from the buffer :)
+    //  so here is some regex to remove the bold ansi escape codes from the buffer :)
     //  the escape code is "[1m", but can be chucked in with other styling codes like color, ie "[32;1m" (set green foreground with 32 and bold with 1)
     //  more examples here: https://gist.github.com/ConnerWill/d4b6c776b509add763e17f9f113fd25b#colors--graphics-mode
-    buffer = buffer.replaceAll("\x1b[32;7;1m", "\x1b[32;7m");
-    buffer = buffer.replaceAll("\x1b[32;1m", "\x1b[32m");
+    const boldPattern = /\x1b\[([0-9;]*)1([0-9;]*)m/g;
+    const removeBold = (_match: string, p1: string, p2: string) => {
+        // Reconstruct the escape code without '1'
+        const newCode = `${p1}${p2}`.replace(/;;/, ';').replace(/^;|;$/, ''); // Remove double semicolons or leading/trailing semicolons
+        return `\x1b[${newCode}m`;
+    };
+
+    buffer = buffer.replace(boldPattern, removeBold);
 
     return buffer;
 }
