@@ -15,11 +15,15 @@ RUN npm ci --include=dev && \
 FROM node:22-alpine AS main
 
 RUN mkdir /tonga && chown node: /tonga
-WORKDIR /tonga
 
 ENV NODE_ENV=production
+ENV LANG=C.UTF-8
 
-COPY --chown=node:node ./package*.json ./
+COPY --chown=node:node ./package*.json /tonga/
+COPY --chown=node:node --from=build /tonga/dist /tonga/
+COPY --chown=node:node ./GeoLite2-City/GeoLite2-City.mmdb /tonga/GeoLite2-City/
+
+WORKDIR /tonga
 
 RUN apk add --no-cache tzdata && \
     apk add --no-cache --virtual .gyp python3 make g++ && \
@@ -27,8 +31,6 @@ RUN apk add --no-cache tzdata && \
     apk del .gyp
 
 USER node
-
-COPY --chown=node:node --from=build /tonga/dist ./
 
 EXPOSE 8676
 

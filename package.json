@@ -4,9 +4,10 @@
     "private": "true",
     "type": "module",
     "scripts": {
-        "start": "npm run build && node --env-file=.env dist/web/index.js",
+        "start": "node web/index.js",
+        "dev": "npm run build && node --env-file=.env dist/web/index.js",
         "build": "tsc && vite build",
-        "dashboard": "node --env-file=.env dist/dashboard/index.js"
+        "dashboard": "node dashboard/index.js"
     },
     "devDependencies": {
         "@tsconfig/node20": "^20.1.4",
