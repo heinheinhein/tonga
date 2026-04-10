@@ -1,20 +1,32 @@
+import { isIP } from "net";
+
 /**
- * Replace the last octect of an IPv4 address with asterisks
- * @param ip IPv4 address
- * @returns Anonymized IP address like `192.0.2.*`
+ * Replace the last octect of an IPv4 address with asterisks, or keep only the first 32 bits of an IPv6 address
+ * @param ip IP address
+ * @returns Anonymized IP address like `192.0.2.*` or `2001:db8::`
  */
 export function anonymizeIp(ip: string): string {
-    // pretend ipv6 does not exist
+    const IpVersion = isIP(ip);
+    
+    if (IpVersion === 4) {
+        let splitIp: string[] = ip.split(".");
 
-    let splitIp: string[] = ip.split(".");
-    if (splitIp.length !== 4) return "192.0.2.*";
+        // randomize the amount of stars used for the last octet
+        const randomOctet = Math.round(Math.random() * 253) + 1;
+        splitIp[3] = randomOctet.toString().replace(/\d/g, "*");
 
-    // randomize the amount of stars used for the last octet
-    const randomOctet = Math.round(Math.random() * 253) + 1;
-    splitIp[3] = randomOctet.toString().replace(/\d/g, "*");
+        ip = splitIp.join(".");
+        return ip;
+    }
 
-    ip = splitIp.join(".");
-    return ip;
+    if (IpVersion === 6) {
+        let splitIp: string[] = ip.split(":");
+        ip = `${splitIp[0]}:${splitIp[1]}::`;
+        
+        return ip;
+    }
+
+    return "192.0.2.*";
 }
 
 /**
