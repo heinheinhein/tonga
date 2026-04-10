@@ -8,8 +8,8 @@ export function updateAlltimeStats(widget: blessed.Widgets.BoxElement, serverSta
     const boxWidth = 20;
 
     const content =
-        `${chalk.green("Up ↑")} ${fixStringLength(formatBytes(serverState.alltime_ul), boxWidth - 5, true)}\n` +
-        `${chalk.green("Down ↓")} ${fixStringLength(formatBytes(serverState.alltime_dl), boxWidth - 7, true)}\n` +
+        `${chalk.green("Upload")} ${fixStringLength(formatBytes(serverState.alltime_ul), boxWidth - 7, true)}\n` +
+        `${chalk.green("Download")} ${fixStringLength(formatBytes(serverState.alltime_dl), boxWidth - 9, true)}\n` +
         `${chalk.green("Ratio")} ${fixStringLength(serverState.global_ratio, boxWidth - 6, true)}`;
 
     widget.setContent(content);
